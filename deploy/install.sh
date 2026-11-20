@@ -18,7 +18,7 @@ say(){ printf '\n== %s\n' "$*"; }
 
 say "1. Site files"
 command -v git >/dev/null || { apt-get update -qq && apt-get install -y -qq git; }
-if [ -d "$DIR/.git" ]; then git -C "$DIR" pull -q --ff-only; else mkdir -p "$(dirname "$DIR")"; git clone -q --depth 1 "$REPO" "$DIR"; fi
+if [ -d "$DIR/.git" ]; then git -C "$DIR" fetch -q --depth 1 origin main && git -C "$DIR" reset -q --hard origin/main; else mkdir -p "$(dirname "$DIR")"; git clone -q --depth 1 "$REPO" "$DIR"; fi
 WEB="$DIR/site"; [ -f "$WEB/index.html" ] || { echo "No site/index.html in the repo"; exit 1; }
 echo "site at $WEB ($(git -C "$DIR" log -1 --format='%h %cd'))"
 
@@ -69,7 +69,7 @@ cat > /etc/systemd/system/info-siang-pull.service <<UNIT
 Description=Pull the latest info.siang.co site
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/git -C $DIR pull -q --ff-only
+ExecStart=/bin/sh -c 'git -C $DIR fetch -q --depth 1 origin main && git -C $DIR reset -q --hard origin/main'
 UNIT
 cat > /etc/systemd/system/info-siang-pull.timer <<UNIT
 [Unit]
