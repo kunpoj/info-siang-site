@@ -1,5 +1,7 @@
 # info.siang.co, static site (written by install.sh). Caddy gets the HTTPS certificate by itself.
 __DOMAIN__ {
+    # listen on the public address only: Tailscale already holds :443 on its own interface
+    bind __BIND__
     root * __ROOT__
     encode zstd gzip
     header {

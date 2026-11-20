@@ -44,9 +44,12 @@ case "${holder:-none}" in
     mkdir -p /etc/caddy/sites
     # a fresh Caddy ships a demo site on :80; replace that stock file with one that only loads our sites
     if grep -q '/usr/share/caddy' /etc/caddy/Caddyfile 2>/dev/null; then cp /etc/caddy/Caddyfile /etc/caddy/Caddyfile.stock; printf 'import sites/*\n' > /etc/caddy/Caddyfile; fi
-    sed "s#__ROOT__#$WEB#g; s#__DOMAIN__#$DOMAIN#g" "$DIR/deploy/Caddyfile" > /etc/caddy/sites/$DOMAIN.caddy
+    BIND=${BIND:-$(ip -4 route get 1.1.1.1 | awk '{for(i=1;i<=NF;i++) if($i=="src") print $(i+1)}')}
+    echo "Caddy listens on $BIND"
+    sed "s#__ROOT__#$WEB#g; s#__DOMAIN__#$DOMAIN#g; s#__BIND__#$BIND#g" "$DIR/deploy/Caddyfile" > /etc/caddy/sites/$DOMAIN.caddy
     grep -q 'import sites/\*' /etc/caddy/Caddyfile 2>/dev/null || printf '\nimport sites/*\n' >> /etc/caddy/Caddyfile
-    caddy validate --config /etc/caddy/Caddyfile >/dev/null && systemctl reload caddy || systemctl restart caddy
+    caddy validate --config /etc/caddy/Caddyfile >/dev/null && { systemctl is-active -q caddy && systemctl reload caddy || systemctl restart caddy; }
+    systemctl is-active caddy
     ;;
   apache2|httpd)
     sed "s#__ROOT__#$WEB#g; s#__DOMAIN__#$DOMAIN#g" "$DIR/deploy/apache.conf" > /etc/apache2/sites-available/$DOMAIN.conf
