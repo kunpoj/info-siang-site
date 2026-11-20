@@ -1,0 +1,25 @@
+# info.siang.co, static site (written by install.sh). Caddy gets the HTTPS certificate by itself.
+__DOMAIN__ {
+    root * __ROOT__
+    encode zstd gzip
+    header {
+        X-Robots-Tag "noindex, nofollow"
+        X-Content-Type-Options "nosniff"
+        Referrer-Policy "strict-origin-when-cross-origin"
+    }
+    @long path /assets/art/* /assets/fonts/* /assets/brand/* /assets/tex/* /assets/audio/*
+    header @long Cache-Control "public, max-age=2592000"
+    @short path /assets/css/* /assets/js/* /assets/fonts.css
+    header @short Cache-Control "public, max-age=300"
+    redir /gallery/ /for/#gallery 301
+    redir /festival/ /for/#festival 301
+    redir /venue/ /for/#venue 301
+    redir /organiser/ /for/#organiser 301
+    redir /en/gallery/ /en/for/#gallery 301
+    redir /en/festival/ /en/for/#festival 301
+    redir /en/venue/ /en/for/#venue 301
+    redir /en/organiser/ /en/for/#organiser 301
+    @hidden path /.*
+    respond @hidden 404
+    file_server
+}

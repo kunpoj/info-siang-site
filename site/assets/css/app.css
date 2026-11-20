@@ -1,0 +1,17 @@
+/* App coming soon page */
+.ap-hero{background:var(--paper);padding:120px 0 104px}
+.ap-g{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);column-gap:56px;align-items:center;min-height:calc(100svh - 224px)}
+.ap-copy .display{font-size:var(--h1);line-height:1;letter-spacing:-.04em}
+:lang(th) .ap-copy .display{line-height:1.24;letter-spacing:-.005em}
+.ap-art .try{display:none}
+.ap-copy .lede{margin-top:28px;max-width:24em}
+.ap-cta{margin-top:36px}
+.ap-note{margin-top:20px;font-size:15px;color:var(--mute)}
+.ap-note a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.ap-art{display:flex;justify-content:center}
+.ap-art .phone-in{box-shadow:inset 0 0 0 2px #2A2A2A,inset 0 0 0 5px #111,0 40px 60px -24px rgba(40,30,20,.5),0 90px 120px -60px rgba(40,30,20,.4)}
+@media (max-width:900px){
+  .ap-hero{padding:96px 0 72px}
+  .ap-g{grid-template-columns:minmax(0,1fr);min-height:0}
+  .ap-art{margin-top:48px}
+}
