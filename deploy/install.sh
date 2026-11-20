@@ -7,6 +7,7 @@
 #   3. Gets an HTTPS certificate (needs the DNS record info.siang.co -> this server first)
 #   4. Adds a timer that pulls new versions every minute
 # It stops without changing anything if port 80 is held by something it does not know (for example a Docker proxy).
+# It does not touch the firewall: open ports 80 and 443 yourself first (ufw allow 80,443/tcp).
 set -euo pipefail
 DOMAIN=${DOMAIN:-info.siang.co}
 REPO=${REPO:-https://github.com/kunpoj/info-siang-site.git}
@@ -41,6 +42,8 @@ case "${holder:-none}" in
         apt-get update -qq && apt-get install -y -qq caddy; }
     fi
     mkdir -p /etc/caddy/sites
+    # a fresh Caddy ships a demo site on :80; replace that stock file with one that only loads our sites
+    if grep -q '/usr/share/caddy' /etc/caddy/Caddyfile 2>/dev/null; then cp /etc/caddy/Caddyfile /etc/caddy/Caddyfile.stock; printf 'import sites/*\n' > /etc/caddy/Caddyfile; fi
     sed "s#__ROOT__#$WEB#g; s#__DOMAIN__#$DOMAIN#g" "$DIR/deploy/Caddyfile" > /etc/caddy/sites/$DOMAIN.caddy
     grep -q 'import sites/\*' /etc/caddy/Caddyfile 2>/dev/null || printf '\nimport sites/*\n' >> /etc/caddy/Caddyfile
     caddy validate --config /etc/caddy/Caddyfile >/dev/null && systemctl reload caddy || systemctl restart caddy
