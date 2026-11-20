@@ -73,7 +73,6 @@
   function finish() {
     var p = ph(); if (p) { p.stopAudio(); p.mark(null); }
     cur = S.length; dm.classList.add('ended'); dm.setAttribute('data-step', 'end');
-    $('.dm-mch').innerHTML = $('.dm-end .dm-ch').innerHTML;
     $('.dm-mx').innerHTML = '<b>' + $('.dm-end .dm-t').innerHTML + '</b> ' + $('.dm-end .dm-x').innerHTML;
   }
 

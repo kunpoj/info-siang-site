@@ -16,8 +16,9 @@
 .dm.dark .dm-ph .phone-in{box-shadow:inset 0 0 0 2px #2A2A2A,inset 0 0 0 5px #111,0 40px 90px -30px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.06)}
 
 /* the page title stays; the story and the end take turns under it */
-.dm-left{justify-content:flex-start;padding-top:max(0px,calc(50svh - 330px))}
-.dm-h1{font-size:15px;line-height:1.5;font-weight:500;letter-spacing:0;color:var(--mute)}
+.dm-left{justify-content:flex-start;padding-top:max(0px,calc(50svh - 250px))}
+/* the page title is for screen readers only: a small grey line above the story read as a label (eyebrow) */
+.dm-h1{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .dm.dark .dm-h1{color:var(--mute-d)}
 .dm-story,.dm-end{max-width:30em;margin-top:clamp(28px,7svh,72px)}
 .dm-end{display:none}
@@ -33,7 +34,7 @@
 @keyframes dmIn{from{opacity:0;transform:translateY(10px)}}
 /* back and next: small and quiet; the real way on is the tap in the phone */
 .dm-nav{display:flex;align-items:center;gap:14px;margin-top:28px}
-.dm-back{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:inherit;opacity:.6;transition:opacity .2s,background .2s}
+.dm-back{width:40px;height:40px;margin-left:-14px;border-radius:50%;display:grid;place-items:center;color:inherit;opacity:.6;transition:opacity .2s,background .2s}
 .dm-back:hover{opacity:1;background:rgba(14,14,14,.06)}
 .dm.dark .dm-back:hover{background:rgba(255,255,255,.1)}
 .dm-back:disabled{opacity:.2;cursor:default;background:none}
